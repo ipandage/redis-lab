@@ -86,7 +86,9 @@ static inline char sdsReqType(size_t string_size) {
  * You can print the string with printf() as there is an implicit \0 at the
  * end of the string. However the string is binary safe and can contain
  * \0 characters in the middle, as the length is stored in the sds header. */
+// 创建SDS
 sds sdsnewlen(const void *init, size_t initlen) {
+    printf("sdsnewlen");
     void *sh;
     sds s;
     char type = sdsReqType(initlen);
@@ -164,7 +166,7 @@ sds sdsdup(const sds s) {
 /* Free an sds string. No operation is performed if 's' is NULL. */
 void sdsfree(sds s) {
     if (s == NULL) return;
-    s_free((char*)s-sdsHdrSize(s[-1]));
+    s_free((char*)s-sdsHdrSize(s[-1])); // 直接释放内存
 }
 
 /* Set the sds string length to the length as obtained with strlen(), so
@@ -191,8 +193,8 @@ void sdsupdatelen(sds s) {
  * so that next append operations will not require allocations up to the
  * number of bytes previously available. */
 void sdsclear(sds s) {
-    sdssetlen(s, 0);
-    s[0] = '\0';
+    sdssetlen(s, 0); // 统计值len归零
+    s[0] = '\0'; // 清空 buf
 }
 
 /* Enlarge the free space at the end of the sds string so that the caller
